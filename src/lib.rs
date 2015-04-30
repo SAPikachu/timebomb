@@ -20,8 +20,8 @@ use pulse::{Signal, TimeoutError};
 /// Run f for at most max_ms, this function will panic if
 /// f is still running.
 pub fn timeout_ms<F>(f: F, max_ms: u32) where F: FnOnce() + Send + 'static {
-    let (mut signal_start, pulse_start) = Signal::new();
-    let (mut signal_end, pulse_end) = Signal::new();
+    let (signal_start, pulse_start) = Signal::new();
+    let (signal_end, pulse_end) = Signal::new();
 
     let guard = thread::spawn(|| {
         pulse_start.pulse();
@@ -29,7 +29,7 @@ pub fn timeout_ms<F>(f: F, max_ms: u32) where F: FnOnce() + Send + 'static {
         pulse_end.pulse();
     });
 
-    // Wait for the thread to start
+    // Wait for the thread to start.
     // This is done so that a loaded computer
     // does not timeout before the thread has been started
     signal_start.wait().unwrap();
