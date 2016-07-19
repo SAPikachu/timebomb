@@ -7,5 +7,4 @@ homepage = "https://github.com/csherratt/timebomb"
 description = "A timeout mechnisem for unit tests"
 
 [dependencies]
-pulse = "*"
-time = "*"
+pulse = "0.5"
